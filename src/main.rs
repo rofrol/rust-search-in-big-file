@@ -1,12 +1,11 @@
-use memmap::MmapOptions;
-use std::fs::File;
-use std::io::Write;
+use std::fs;
 fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     println!("Hello, world!");
     // open file
     // search for string
-    let file = File::open("README.md")?;
-    let mmap = unsafe { MmapOptions::new().map(&file)? };
-    assert_eq!(b"# rust-s", &mmap[0..8]);
+    let contents = fs::read_to_string("README.md")?;
+    println!("{}", contents);
+    let found = contents.find("would");
+    assert_eq!(found, Some(56));
     Ok(())
 }
